@@ -19,112 +19,112 @@ public class MongoDBConverterDelegate implements ConverterDelegate {
     }
 
     @Override
-    public String query_rule1(String select, String column_names, String from, String database_name, String where_part, String skip_limit_part) {
-        return "db." + database_name + ".find(" + where_part + column_names + ")" + skip_limit_part;
+    public String queryRule1(String select, String columnNames, String from, String databaseName, String wherePart, String skipLimitPart) {
+        return "db." + databaseName + ".find(" + wherePart + columnNames + ")" + skipLimitPart;
     }
 
     @Override
-    public String columns_names_rule1(String star) {
+    public String columnsNamesRule1(String star) {
         return "";
     }
 
     @Override
-    public String columns_names_rule2(String column_name, String column_names_cont) {
-        return ", {" + column_name + ": 1" + column_names_cont + "}";
+    public String columnsNamesRule2(String columnName, String columnNamesCont) {
+        return ", {" + columnName + ": 1" + columnNamesCont + "}";
     }
 
     @Override
-    public String columns_names_cont_rule1(String comma, String column_name, String column_names_cont) {
-        return ", " + column_name + ": 1" + column_names_cont;
+    public String columnsNamesContRule1(String comma, String columnName, String columnNamesCont) {
+        return ", " + columnName + ": 1" + columnNamesCont;
     }
 
     @Override
-    public String columns_names_cont_rule2() {
+    public String columnsNamesContRule2() {
         return "";
     }
 
     @Override
-    public String where_part_rule1(String where, String condition) {
+    public String wherePartRule1(String where, String condition) {
         return "{" + condition + "}";
     }
 
     @Override
-    public String where_part_rule2() {
+    public String wherePartRule2() {
         return "{}";
     }
 
     @Override
-    public String condition_rule1(String name, String comparing_op, String field_value) {
-        return name + ": {" + comparing_op + ": " + field_value + "}";
+    public String conditionRule1(String name, String comparingOp, String fieldValue) {
+        return name + ": {" + comparingOp + ": " + fieldValue + "}";
     }
 
     @Override
-    public String condition_rule2(String field_value, String comparing_op, String name) {
-        return name + ": {" + invertComparingOperator(comparing_op) + ": " + field_value + "}";
+    public String conditionRule2(String fieldValue, String comparingOp, String name) {
+        return name + ": {" + invertComparingOperator(comparingOp) + ": " + fieldValue + "}";
     }
 
     @Override
-    public String field_value_rule1(String string_val) {
-        return string_val;
+    public String fieldValueRule1(String stringVal) {
+        return stringVal;
     }
 
     @Override
-    public String field_value_rule2(String neg_int_val) {
-        return neg_int_val;
+    public String fieldValueRule2(String negIntVal) {
+        return negIntVal;
     }
 
     @Override
-    public String field_value_rule3(String pos_int_val) {
-        return pos_int_val;
+    public String fieldValueRule3(String posIntVal) {
+        return posIntVal;
     }
 
     @Override
-    public String skip_limit_part_rule1(String skip_part, String limit_part) {
-        return skip_part + limit_part;
+    public String skipLimitPartRule1(String skipPart, String limitPart) {
+        return skipPart + limitPart;
     }
 
     @Override
-    public String skip_limit_part_rule2(String limit_part, String skip_part) {
-        return limit_part + skip_part;
+    public String skipLimitPartRule2(String limitPart, String skipPart) {
+        return limitPart + skipPart;
     }
 
     @Override
-    public String skip_limit_part_rule3() {
+    public String skipLimitPartRule3() {
         return "";
     }
 
     @Override
-    public String skip_part_rule1(String abs_skip_part) {
-        return abs_skip_part;
+    public String skipPartRule1(String absSkipPart) {
+        return absSkipPart;
     }
 
     @Override
-    public String skip_part_rule2() {
+    public String skipPartRule2() {
         return "";
     }
 
     @Override
-    public String abs_skip_part_rule1(String skip, String pos_int_val) {
-        return ".skip(" + pos_int_val + ")";
+    public String absSkipPartRule1(String skip, String posIntVal) {
+        return ".skip(" + posIntVal + ")";
     }
 
     @Override
-    public String limit_part_rule1(String abs_limit_part) {
-        return abs_limit_part;
+    public String limitPartRule1(String absLimitPart) {
+        return absLimitPart;
     }
 
     @Override
-    public String limit_part_rule2() {
+    public String limitPartRule2() {
         return "";
     }
 
     @Override
-    public String abs_limit_part_rule1(String limit, String pos_int_val) {
-        return ".limit(" + pos_int_val + ")";
+    public String absLimitPartRule1(String limit, String posIntVal) {
+        return ".limit(" + posIntVal + ")";
     }
 
     @Override
-    public String terminal_representation(@NotNull Token token, String content) {
+    public String terminalRepresentation(@NotNull Token token, String content) {
         switch (token) {
             case COMPARING_OP:
                 switch (content) {

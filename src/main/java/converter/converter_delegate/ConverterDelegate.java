@@ -6,68 +6,68 @@ import structures.Token;
 public interface ConverterDelegate {
 
     // Rule1: QUERY = select COLUMN_NAMES from name WHERE_PART SKIP_PART (rule1)
-    String query_rule1(String select, String column_names_list, String from, String database_name, String where_part, String skip_part);
+    String queryRule1(String select, String columnNamesList, String from, String databaseName, String wherePart, String skipPart);
 
     // Rule1: COLUMN_NAMES = star
-    String columns_names_rule1(String star);
+    String columnsNamesRule1(String star);
 
     // Rule2: COLUMN_NAMES = name COLUMN_NAMES_CONT
-    String columns_names_rule2(String column_name, String column_names_cont);
+    String columnsNamesRule2(String columnName, String columnNamesCont);
 
     // Rule1: COLUMN_NAMES_CONT = comma name COLUMN_NAMES_CONT
-    String columns_names_cont_rule1(String comma, String column_name, String column_names_list_cont);
+    String columnsNamesContRule1(String comma, String columnName, String columnNamesListCont);
 
     // Rule2: COLUMN_NAMES_CONT = eps
-    String columns_names_cont_rule2();
+    String columnsNamesContRule2();
 
     // Rule1: WHERE_PART = where CONDITION
-    String where_part_rule1(String where, String condition);
+    String wherePartRule1(String where, String condition);
 
     // Rule2: WHERE_PART = eps
-    String where_part_rule2();
+    String wherePartRule2();
 
     // Rule1: CONDITION = name comparing_op FIELD_VALUE
-    String condition_rule1(String name, String comparing_op, String field_value);
+    String conditionRule1(String name, String comparingOp, String fieldValue);
 
     // Rule2: CONDITION = FIELD_VALUE comparing_op name
-    String condition_rule2(String field_value, String comparing_op, String name);
+    String conditionRule2(String fieldValue, String comparingOp, String name);
 
     // Rule1: FIELD_VALUE = string
-    String field_value_rule1(String string_val);
+    String fieldValueRule1(String stringVal);
 
     // Rule2: FIELD_VALUE = neg_int
-    String field_value_rule2(String neg_int_val);
+    String fieldValueRule2(String negIntVal);
 
     // Rule3: FIELD_VALUE = pos_int
-    String field_value_rule3(String pos_int_val);
+    String fieldValueRule3(String posIntVal);
 
     // Rule1: SKIP_LIMIT_PART = ABS_SKIP_PART LIMIT_PART
-    String skip_limit_part_rule1(String abs_skip_part, String limit_part);
+    String skipLimitPartRule1(String absSkipPart, String limitPart);
 
     // Rule2: SKIP_LIMIT_PART = ABS_LIMIT_PART SKIP_PART
-    String skip_limit_part_rule2(String abs_limit_part, String skip_part);
+    String skipLimitPartRule2(String absLimitPart, String skipPart);
 
     // Rule3: SKIP_LIMIT_PART = eps
-    String skip_limit_part_rule3();
+    String skipLimitPartRule3();
 
     // Rule1: SKIP_PART = ABS_SKIP_PART
-    String skip_part_rule1(String abs_skip_part);
+    String skipPartRule1(String absSkipPart);
 
     // Rule2: SKIP_PART = eps
-    String skip_part_rule2();
+    String skipPartRule2();
 
     // Rule1: ABS_SKIP_PART = SKIP pos_int
-    String abs_skip_part_rule1(String skip, String pos_int_val);
+    String absSkipPartRule1(String skip, String posIntVal);
 
     // Rule1: LIMIT_PART = ABS_LIMIT_PART
-    String limit_part_rule1(String abs_limit_part);
+    String limitPartRule1(String absLimitPart);
 
     // Rule2: LIMIT_PART = eps
-    String limit_part_rule2();
+    String limitPartRule2();
 
     // Rule1: ABS_LIMIT_PART = limit pos_int
-    String abs_limit_part_rule1(String limit, String pos_int_val);
+    String absLimitPartRule1(String limit, String posIntVal);
 
     // terminal representation
-    String terminal_representation(@NotNull Token token, String content);
+    String terminalRepresentation(@NotNull Token token, String content);
 }
