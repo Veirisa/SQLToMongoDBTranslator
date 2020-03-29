@@ -24,22 +24,22 @@ public class MongoDBConverterDelegate implements ConverterDelegate {
     }
 
     @Override
-    public String columnsNamesRule1(String star) {
+    public String columnNamesRule1(String star) {
         return "";
     }
 
     @Override
-    public String columnsNamesRule2(String columnName, String columnNamesCont) {
+    public String columnNamesRule2(String columnName, String columnNamesCont) {
         return ", {" + columnName + ": 1" + columnNamesCont + "}";
     }
 
     @Override
-    public String columnsNamesContRule1(String comma, String columnName, String columnNamesCont) {
+    public String columnNamesContRule1(String comma, String columnName, String columnNamesCont) {
         return ", " + columnName + ": 1" + columnNamesCont;
     }
 
     @Override
-    public String columnsNamesContRule2() {
+    public String columnNamesContRule2() {
         return "";
     }
 

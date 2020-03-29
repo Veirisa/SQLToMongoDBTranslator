@@ -9,16 +9,16 @@ public interface ConverterDelegate {
     String queryRule1(String select, String columnNamesList, String from, String databaseName, String wherePart, String skipPart);
 
     // Rule1: COLUMN_NAMES = star
-    String columnsNamesRule1(String star);
+    String columnNamesRule1(String star);
 
     // Rule2: COLUMN_NAMES = name COLUMN_NAMES_CONT
-    String columnsNamesRule2(String columnName, String columnNamesCont);
+    String columnNamesRule2(String columnName, String columnNamesCont);
 
     // Rule1: COLUMN_NAMES_CONT = comma name COLUMN_NAMES_CONT
-    String columnsNamesContRule1(String comma, String columnName, String columnNamesListCont);
+    String columnNamesContRule1(String comma, String columnName, String columnNamesListCont);
 
     // Rule2: COLUMN_NAMES_CONT = eps
-    String columnsNamesContRule2();
+    String columnNamesContRule2();
 
     // Rule1: WHERE_PART = where CONDITION
     String wherePartRule1(String where, String condition);

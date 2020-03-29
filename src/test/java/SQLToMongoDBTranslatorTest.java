@@ -38,16 +38,16 @@ public class SQLToMongoDBTranslatorTest {
                 "db.collection.find({age: {$gt: 22}})"
         );
         Assertions.assertEquals(
-                getTranslationResult("SELECT * FROM collection WHERE name < \"abcd\""),
-                "db.collection.find({name: {$lt: \"abcd\"}})"
+                getTranslationResult("SELECT * FROM collection WHERE name < 'abcd'"),
+                "db.collection.find({name: {$lt: 'abcd'}})"
         );
         Assertions.assertEquals(
                 getTranslationResult("SELECT * FROM collection WHERE income = -11"),
                 "db.collection.find({income: {$eq: -11}})"
         );
         Assertions.assertEquals(
-                getTranslationResult("SELECT * FROM collection WHERE \"abcd\" <> name"),
-                "db.collection.find({name: {$ne: \"abcd\"}})"
+                getTranslationResult("SELECT * FROM collection WHERE 'abcd' <> name"),
+                "db.collection.find({name: {$ne: 'abcd'}})"
         );
         Assertions.assertEquals(
                 getTranslationResult("SELECT * FROM collection WHERE -11 < income"),
@@ -77,7 +77,7 @@ public class SQLToMongoDBTranslatorTest {
         );
         Assertions.assertNull(getTranslationResult("SELECT * FROM collection LIMIT 10 LIMIT 2"));
         Assertions.assertNull(getTranslationResult("SELECT * FROM collection SKIP 2 SKIP 10"));
-        Assertions.assertNull(getTranslationResult("SELECT * FROM collection LIMIT \"10\""));
+        Assertions.assertNull(getTranslationResult("SELECT * FROM collection LIMIT '10'"));
         Assertions.assertNull(getTranslationResult("SELECT * FROM collection SKIP -2"));
     }
 
@@ -96,8 +96,8 @@ public class SQLToMongoDBTranslatorTest {
                 "db.collection.find({income: {$lt: -11}}).limit(10).skip(2)"
         );
         Assertions.assertEquals(
-                getTranslationResult("SELECT * FROM collection WHERE name = \"abcd\" SKIP 2 LIMIT 10"),
-                "db.collection.find({name: {$eq: \"abcd\"}}).skip(2).limit(10)"
+                getTranslationResult("SELECT * FROM collection WHERE name = 'abcd' SKIP 2 LIMIT 10"),
+                "db.collection.find({name: {$eq: 'abcd'}}).skip(2).limit(10)"
         );
         Assertions.assertEquals(
                 getTranslationResult("SELECT column_name FROM collection WHERE 22 > age LIMIT 10"),
@@ -121,12 +121,18 @@ public class SQLToMongoDBTranslatorTest {
                 "db.collection.find({age: {$gt: 22}}, {a: 1, b: 1, c: 1, d: 1}).skip(2).limit(10)"
         );
         Assertions.assertEquals(
-                getTranslationResult("SELECT a1_A2_, _b_B, C13, _Dd_1_23_ FROM c0lL__EcTi0n WHERE A23ge > \"\""),
-                "db.c0lL__EcTi0n.find({A23ge: {$gt: \"\"}}, {a1_A2_: 1, _b_B: 1, C13: 1, _Dd_1_23_: 1})"
+                getTranslationResult("SELECT a1_A2_, _b_B, C13, _Dd_1_23_ FROM c0lL__EcTi0n WHERE n23_ame > ''"),
+                "db.c0lL__EcTi0n.find({n23_ame: {$gt: ''}}, {a1_A2_: 1, _b_B: 1, C13: 1, _Dd_1_23_: 1})"
+        );
+        Assertions.assertEquals(
+                getTranslationResult("SELECt a, b, c, d FROM collection WHERE name > 'a\\'b\\\\\\cd\\''"),
+                "db.collection.find({name: {$gt: 'a\\'b\\\\\\cd\\''}}, {a: 1, b: 1, c: 1, d: 1})"
         );
         Assertions.assertNull(getTranslationResult("SELECT * FROMcollection"));
         Assertions.assertNull(getTranslationResult("SELECT * FROM 0_nameStartFromDigit"));
         Assertions.assertNull(getTranslationResult("SELECT * FROM collection WHERE22 < age"));
         Assertions.assertNull(getTranslationResult("SELECT * FROM collection WHERE age > 22LIMIT 10"));
+        Assertions.assertNull(getTranslationResult("SELECT * FROM collection WHERE name = 'ab'cd'"));
+        Assertions.assertNull(getTranslationResult("SELECT * FROM collection WHERE 'abcd\\' = name"));
     }
 }

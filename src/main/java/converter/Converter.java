@@ -50,12 +50,12 @@ public class Converter {
         Iterator<@NotNull Node> childrenIterator = children.iterator();
         if (children.size() == 1 && children.get(0).isTerminalWithToken(Token.STAR)) {
             String star = terminal(childrenIterator.next(), Token.STAR);
-            return converterDelegate.columnsNamesRule1(star);
+            return converterDelegate.columnNamesRule1(star);
         }
         if (children.size() == 2 && children.get(0).isTerminalWithToken(Token.NAME)) {
             String columnName = terminal(childrenIterator.next(), Token.NAME);
             String columnNamesCont = columnNamesCont(childrenIterator.next());
-            return converterDelegate.columnsNamesRule2(columnName, columnNamesCont);
+            return converterDelegate.columnNamesRule2(columnName, columnNamesCont);
         }
         throw new ConvertException(NodeType.COLUMN_NAMES.toString(), "rule can't be matched");
     }
@@ -68,10 +68,10 @@ public class Converter {
             String comma = terminal(childrenIterator.next(), Token.COMMA);
             String columnName = terminal(childrenIterator.next(), Token.NAME);
             String columnNamesCont = columnNamesCont(childrenIterator.next());
-            return converterDelegate.columnsNamesContRule1(comma, columnName, columnNamesCont);
+            return converterDelegate.columnNamesContRule1(comma, columnName, columnNamesCont);
         }
         if (children.isEmpty()) {
-            return converterDelegate.columnsNamesContRule2();
+            return converterDelegate.columnNamesContRule2();
         }
         throw new ConvertException(NodeType.COLUMN_NAMES_CONT.toString(), "rule can't be matched");
     }

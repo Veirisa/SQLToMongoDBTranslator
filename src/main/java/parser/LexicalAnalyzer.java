@@ -4,7 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import structures.Token;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class LexicalAnalyzer {
 
@@ -20,6 +22,13 @@ public class LexicalAnalyzer {
         put("WHERE", Token.WHERE);
         put("LIMIT", Token.LIMIT);
         put("SKIP", Token.SKIP);
+    }};
+
+    private final Set<String> ComparingOps = new HashSet<String>() {{
+        add("<");
+        add(">");
+        add("=");
+        add("<>");
     }};
 
     public LexicalAnalyzer(@NotNull String text) throws ParseException {
@@ -54,6 +63,11 @@ public class LexicalAnalyzer {
         throw new ParseException("Out of range");
     }
 
+    private void appendAndNextSymbol(StringBuilder sb) throws ParseException {
+        sb.append((char)currentSymbol);
+        nextSymbol();
+    }
+
     private boolean isBlank() {
         return Character.isWhitespace(currentSymbol);
     }
@@ -70,7 +84,7 @@ public class LexicalAnalyzer {
         return currentSymbol == ',';
     }
 
-    private boolean isComparingOperator() {
+    private boolean isComparingSymbol() {
         return currentSymbol == '=' || currentSymbol == '<' || currentSymbol == '>';
     }
 
@@ -82,8 +96,12 @@ public class LexicalAnalyzer {
         return Character.isDigit(currentSymbol);
     }
 
-    private boolean isDoubleQuote() {
-        return currentSymbol == '"';
+    private boolean isSingleQuote() {
+        return currentSymbol == '\'';
+    }
+
+    private boolean isBackSlash() {
+        return currentSymbol == '\\';
     }
 
     private boolean isFirstNameCharacter() {
@@ -95,15 +113,26 @@ public class LexicalAnalyzer {
     }
 
     @NotNull
+    private String tryGetComparingOp() throws ParseException {
+        StringBuilder sb = new StringBuilder();
+        while (isComparingSymbol()) {
+            appendAndNextSymbol(sb);
+        }
+        String ComparingOp = sb.toString();
+        if (!ComparingOps.contains(ComparingOp)) {
+            throw new ParseException("Illegal token", currentPos);
+        }
+        return ComparingOp;
+    }
+
+    @NotNull
     private String tryGetNumber() throws ParseException {
         StringBuilder sb = new StringBuilder();
         if (isDash()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+            appendAndNextSymbol(sb);
         }
         while (isDigit()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+            appendAndNextSymbol(sb);
         }
         if (sb.length() == 0 || isFirstNameCharacter()) {
             throw new ParseException("Illegal token", currentPos);
@@ -112,21 +141,25 @@ public class LexicalAnalyzer {
     }
 
     @NotNull
-    private String tryGetStringInDoubleQuotes() throws ParseException {
+    private String tryGetStringInSingleQuotes() throws ParseException {
         StringBuilder sb = new StringBuilder();
-        if (isDoubleQuote()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+        if (isSingleQuote()) {
+            appendAndNextSymbol(sb);
         } else {
             throw new ParseException("Illegal token", currentPos);
         }
-        while (!isEnd() && !isDoubleQuote()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+        while (!isEnd() && !isSingleQuote()) {
+            if (isBackSlash()) {
+                appendAndNextSymbol(sb);
+            }
+            if (!isEnd()) {
+                appendAndNextSymbol(sb);
+            } else {
+                throw new ParseException("Illegal token", currentPos);
+            }
         }
-        if (isDoubleQuote()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+        if (isSingleQuote()) {
+            appendAndNextSymbol(sb);
         } else {
             throw new ParseException("Illegal token", currentPos);
         }
@@ -137,14 +170,12 @@ public class LexicalAnalyzer {
     private String tryGetNameString() throws ParseException {
         StringBuilder sb = new StringBuilder();
         if (isFirstNameCharacter()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+            appendAndNextSymbol(sb);
         } else {
             throw new ParseException("Illegal token", currentPos);
         }
         while (isNameCharacter()) {
-            sb.append((char)currentSymbol);
-            nextSymbol();
+            appendAndNextSymbol(sb);
         }
         return sb.toString();
     }
@@ -170,20 +201,13 @@ public class LexicalAnalyzer {
             currentToken = Token.COMMA;
             return;
         }
-        if (isComparingOperator()) {
-            int saveSymbol = currentSymbol;
-            nextSymbol();
-            if (saveSymbol == '<' && currentSymbol == '>') {
-                nextSymbol();
-                currentTokenString = "<>";
-            } else {
-                currentTokenString = Character.toString((char)saveSymbol);
-            }
+        if (isComparingSymbol()) {
+            currentTokenString = tryGetComparingOp();
             currentToken = Token.COMPARING_OP;
             return;
         }
-        if (isDoubleQuote()) {
-            currentTokenString = tryGetStringInDoubleQuotes();
+        if (isSingleQuote()) {
+            currentTokenString = tryGetStringInSingleQuotes();
             currentToken = Token.STRING;
             return;
         }
