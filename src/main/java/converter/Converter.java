@@ -19,8 +19,8 @@ public class Converter {
 
     private void checkNodeType(@NotNull Node node, NodeType expectedNodeType) throws ConvertException {
         if (!node.withNodeType(expectedNodeType)) {
-            throw new ConvertException(expectedNodeType.toString()
-                    + " expected instead of " + node.getNodeType().toString());
+            throw new ConvertException(node.getNodeType().toString(), expectedNodeType.toString()
+                    + " expected instead of it");
         }
     }
 
@@ -41,7 +41,7 @@ public class Converter {
             String skip_limit_part = skip_limit_part(childrenIterator.next());
             return converterDelegate.query_rule1(select, column_names, from, database_name, where_part, skip_limit_part);
         }
-        throw new ConvertException("Incorrect node children in query");
+        throw new ConvertException(NodeType.QUERY.toString(), "rule can't be matched");
     }
 
     private String column_names(@NotNull Node node) throws ConvertException {
@@ -57,7 +57,7 @@ public class Converter {
             String column_names_cont = column_names_cont(childrenIterator.next());
             return converterDelegate.columns_names_rule2(column_name, column_names_cont);
         }
-        throw new ConvertException("Incorrect node children in column_names");
+        throw new ConvertException(NodeType.COLUMN_NAMES.toString(), "rule can't be matched");
     }
 
     private String column_names_cont(@NotNull Node node) throws ConvertException {
@@ -73,7 +73,7 @@ public class Converter {
         if (children.isEmpty()) {
             return converterDelegate.columns_names_cont_rule2();
         }
-        throw new ConvertException("Incorrect node children in column_names_cont");
+        throw new ConvertException(NodeType.COLUMN_NAMES_CONT.toString(), "rule can't be matched");
     }
 
     private String where_part(@NotNull Node node) throws ConvertException {
@@ -88,7 +88,7 @@ public class Converter {
         if (children.isEmpty()) {
             return converterDelegate.where_part_rule2();
         }
-        throw new ConvertException("Incorrect node children in where_part");
+        throw new ConvertException(NodeType.WHERE_PART.toString(), "rule can't be matched");
     }
 
     private String condition(@NotNull Node node) throws ConvertException {
@@ -107,7 +107,7 @@ public class Converter {
             String name = terminal(childrenIterator.next(), Token.NAME);
             return converterDelegate.condition_rule2(field_value, comparing_operator, name);
         }
-        throw new ConvertException("Incorrect node children in condition");
+        throw new ConvertException(NodeType.CONDITION.toString(), "rule can't be matched");
     }
 
     private String field_value(@NotNull Node node) throws ConvertException {
@@ -126,7 +126,7 @@ public class Converter {
             String pos_int_val = terminal(childrenIterator.next(), Token.POS_INT);
             return converterDelegate.field_value_rule3(pos_int_val);
         }
-        throw new ConvertException("Incorrect node children in field_value");
+        throw new ConvertException(NodeType.FIELD_VALUE.toString(), "rule can't be matched");
     }
 
     private String skip_limit_part(@NotNull Node node) throws ConvertException {
@@ -146,7 +146,7 @@ public class Converter {
         if (children.isEmpty()) {
             return converterDelegate.skip_limit_part_rule3();
         }
-        throw new ConvertException("Incorrect node children in skip_limit_part");
+        throw new ConvertException(NodeType.SKIP_LIMIT_PART.toString(), "rule can't be matched");
     }
 
     private String skip_part(@NotNull Node node) throws ConvertException {
@@ -160,7 +160,7 @@ public class Converter {
         if (children.isEmpty()) {
             return converterDelegate.skip_part_rule2();
         }
-        throw new ConvertException("Incorrect node children in skip_part");
+        throw new ConvertException(NodeType.SKIP_PART.toString(), "rule can't be matched");
     }
 
     private String abs_skip_part(@NotNull Node node) throws ConvertException {
@@ -172,7 +172,7 @@ public class Converter {
             String pos_int_val = terminal(childrenIterator.next(), Token.POS_INT);
             return converterDelegate.abs_skip_part_rule1(skip, pos_int_val);
         }
-        throw new ConvertException("Incorrect node children in abs_skip_part");
+        throw new ConvertException(NodeType.ABS_SKIP_PART.toString(), "rule can't be matched");
     }
 
     private String limit_part(@NotNull Node node) throws ConvertException {
@@ -186,7 +186,7 @@ public class Converter {
         if (children.isEmpty()) {
             return converterDelegate.limit_part_rule2();
         }
-        throw new ConvertException("Incorrect node children in limit_part");
+        throw new ConvertException(NodeType.LIMIT_PART.toString(), "rule can't be matched");
     }
 
     private String abs_limit_part(@NotNull Node node) throws ConvertException {
@@ -198,7 +198,7 @@ public class Converter {
             String pos_int_val = terminal(childrenIterator.next(), Token.POS_INT);
             return converterDelegate.abs_limit_part_rule1(limit, pos_int_val);
         }
-        throw new ConvertException("Incorrect node children in abs_limit_part");
+        throw new ConvertException(NodeType.ABS_LIMIT_PART.toString(), "rule can't be matched");
     }
 
     private String terminal(@NotNull Node node, Token expectedToken) throws ConvertException {
@@ -207,7 +207,7 @@ public class Converter {
             return converterDelegate.terminal_representation(node.getToken(), node.getContent());
         }
         String terminal = NodeType.TERMINAL.toString();
-        throw new ConvertException(terminal + " with " + expectedToken.toString()
-                + " expected instead of " + terminal + " with " + node.getToken().toString());
+        throw new ConvertException(terminal + " with " + node.getToken().toString(),
+                terminal + " with " + expectedToken.toString() + " expected instead of it");
     }
 }
