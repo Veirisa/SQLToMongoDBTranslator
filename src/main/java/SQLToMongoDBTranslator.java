@@ -22,7 +22,7 @@ public class SQLToMongoDBTranslator {
             Node query = parser.parse(sqlQuery);
             return mongoDBConverter.convert(query);
         } catch (ParseException | ConvertException e) {
-            throw new TranslateException();
+            throw new TranslateException("Incorrect SQL query for translation");
         }
     }
 }
