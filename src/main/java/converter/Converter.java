@@ -13,7 +13,7 @@ public class Converter {
 
     private ConverterDelegate converterDelegate;
 
-    public Converter(ConverterDelegate converterDelegate) {
+    public Converter(@NotNull ConverterDelegate converterDelegate) {
         this.converterDelegate = converterDelegate;
     }
 
@@ -30,8 +30,8 @@ public class Converter {
 
     private String query(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.QUERY);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 6 && children.get(0).isTerminalWithToken(Token.SELECT)) {
             String select = terminal(childrenIterator.next(), Token.SELECT);
             String columnNames = columnNames(childrenIterator.next());
@@ -46,8 +46,8 @@ public class Converter {
 
     private String columnNames(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.COLUMN_NAMES);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 1 && children.get(0).isTerminalWithToken(Token.STAR)) {
             String star = terminal(childrenIterator.next(), Token.STAR);
             return converterDelegate.columnNamesRule1(star);
@@ -62,8 +62,8 @@ public class Converter {
 
     private String columnNamesCont(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.COLUMN_NAMES_CONT);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 3 && children.get(0).isTerminalWithToken(Token.COMMA)) {
             String comma = terminal(childrenIterator.next(), Token.COMMA);
             String columnName = terminal(childrenIterator.next(), Token.NAME);
@@ -78,8 +78,8 @@ public class Converter {
 
     private String wherePart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.WHERE_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 2 && children.get(0).isTerminalWithToken(Token.WHERE)) {
             String where = terminal(childrenIterator.next(), Token.WHERE);
             String condition = condition(childrenIterator.next());
@@ -93,8 +93,8 @@ public class Converter {
 
     private String condition(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.CONDITION);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 3 && children.get(0).isTerminalWithToken(Token.NAME)) {
             String name = terminal(childrenIterator.next(), Token.NAME);
             String comparingOp = terminal(childrenIterator.next(), Token.COMPARING_OP);
@@ -112,8 +112,8 @@ public class Converter {
 
     private String fieldValue(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.FIELD_VALUE);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 1 && children.get(0).isTerminalWithToken(Token.STRING)) {
             String stringVal = terminal(childrenIterator.next(), Token.STRING);
             return converterDelegate.fieldValueRule1(stringVal);
@@ -131,8 +131,8 @@ public class Converter {
 
     private String skipLimitPart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.SKIP_LIMIT_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 2 && children.get(0).withNodeType(NodeType.ABS_SKIP_PART)) {
             String absSkipPart = absSkipPart(childrenIterator.next());
             String limitPart = limitPart(childrenIterator.next());
@@ -151,8 +151,8 @@ public class Converter {
 
     private String skipPart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.SKIP_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 1 && children.get(0).withNodeType(NodeType.ABS_SKIP_PART)) {
             String absSkipPart = absSkipPart(childrenIterator.next());
             return converterDelegate.skipPartRule1(absSkipPart);
@@ -165,8 +165,8 @@ public class Converter {
 
     private String absSkipPart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.ABS_SKIP_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 2 && children.get(0).isTerminalWithToken(Token.SKIP)) {
             String skip = terminal(childrenIterator.next(), Token.SKIP);
             String posIntVal = terminal(childrenIterator.next(), Token.POS_INT);
@@ -177,8 +177,8 @@ public class Converter {
 
     private String limitPart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.LIMIT_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 1 && children.get(0).withNodeType(NodeType.ABS_LIMIT_PART)) {
             String absLimitPart = absLimitPart(childrenIterator.next());
             return converterDelegate.limitPartRule1(absLimitPart);
@@ -191,8 +191,8 @@ public class Converter {
 
     private String absLimitPart(@NotNull Node node) throws ConvertException {
         checkNodeType(node, NodeType.ABS_LIMIT_PART);
-        List<@NotNull Node> children = node.getChildren();
-        Iterator<@NotNull Node> childrenIterator = children.iterator();
+        List<Node> children = node.getChildren();
+        Iterator<Node> childrenIterator = children.iterator();
         if (children.size() == 2 && children.get(0).isTerminalWithToken(Token.LIMIT)) {
             String limit = terminal(childrenIterator.next(), Token.LIMIT);
             String posIntVal = terminal(childrenIterator.next(), Token.POS_INT);

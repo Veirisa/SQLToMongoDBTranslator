@@ -1,6 +1,5 @@
 package converter.converter_delegate;
 
-import org.jetbrains.annotations.NotNull;
 import structures.Token;
 
 public class MongoDBConverterDelegate implements ConverterDelegate {
@@ -124,7 +123,7 @@ public class MongoDBConverterDelegate implements ConverterDelegate {
     }
 
     @Override
-    public String terminalRepresentation(@NotNull Token token, String content) {
+    public String terminalRepresentation(Token token, String content) {
         switch (token) {
             case COMPARING_OP:
                 switch (content) {

@@ -69,5 +69,5 @@ public interface ConverterDelegate {
     String absLimitPartRule1(String limit, String posIntVal);
 
     // terminal representation
-    String terminalRepresentation(@NotNull Token token, String content);
+    String terminalRepresentation(Token token, String content);
 }

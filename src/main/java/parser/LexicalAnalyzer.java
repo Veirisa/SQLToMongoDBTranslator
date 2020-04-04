@@ -42,10 +42,12 @@ public class LexicalAnalyzer {
         return currentPos;
     }
 
+    @NotNull
     public Token getCurrentToken() {
         return currentToken;
     }
 
+    @NotNull
     public String getCurrentTokenString() {
         return currentTokenString;
     }

@@ -22,7 +22,7 @@ public class Parser {
 
     @NotNull
     private Node query() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case SELECT:
                 children.add(terminal(Token.SELECT));
@@ -43,7 +43,7 @@ public class Parser {
 
     @NotNull
     private Node column_names() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case STAR:
                 children.add(terminal(Token.STAR));
@@ -63,7 +63,7 @@ public class Parser {
 
     @NotNull
     private Node column_names_cont() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case COMMA:
                 children.add(terminal(Token.COMMA));
@@ -83,7 +83,7 @@ public class Parser {
 
     @NotNull
     private Node where_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case WHERE:
                 children.add(terminal(Token.WHERE));
@@ -105,7 +105,7 @@ public class Parser {
 
     @NotNull
     private Node condition() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case NAME:
                 children.add(terminal(Token.NAME));
@@ -131,7 +131,7 @@ public class Parser {
 
     @NotNull
     private Node field_value() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case STRING:
                 children.add(terminal(Token.STRING));
@@ -154,7 +154,7 @@ public class Parser {
 
     @NotNull
     private Node skip_limit_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case SKIP:
                 children.add(abs_skip_part());
@@ -177,7 +177,7 @@ public class Parser {
 
     @NotNull
     private Node skip_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case SKIP:
                 children.add(abs_skip_part());
@@ -195,7 +195,7 @@ public class Parser {
 
     @NotNull
     private Node abs_skip_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case SKIP:
                 children.add(terminal(Token.SKIP));
@@ -212,7 +212,7 @@ public class Parser {
 
     @NotNull
     private Node limit_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case LIMIT:
                 children.add(abs_limit_part());
@@ -230,7 +230,7 @@ public class Parser {
 
     @NotNull
     private Node abs_limit_part() throws ParseException {
-        List<@NotNull Node> children = new ArrayList<>();
+        List<Node> children = new ArrayList<>();
         switch (lexer.getCurrentToken()) {
             case LIMIT:
                 children.add(terminal(Token.LIMIT));
